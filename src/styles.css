@@ -1,15 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --color-paper: #f3f7f6;
-  --color-card: #e8f2ef;
-  --color-line: rgba(15, 23, 42, 0.1);
-  --color-ink: #10212a;
-  --color-muted: #5c6d72;
-  --color-accent: #0f8c83;
-  --color-accent-strong: #0b6d66;
-  --font-serif: "Fraunces", serif;
-  --font-sans: "IBM Plex Sans", sans-serif;
+  --color-paper: #f7f4fb;
+  --color-surface: rgba(255, 255, 255, 0.76);
+  --color-card: #f0e9fb;
+  --color-line: rgba(83, 61, 112, 0.16);
+  --color-ink: #1e1728;
+  --color-muted: #6f637f;
+  --color-accent: #8f79c9;
+  --color-accent-strong: #7259b5;
+  --color-accent-soft: #efe8fb;
+  --color-accent-ink: #2f2148;
+  --font-display: "Instrument Serif", serif;
+  --font-sans: "Manrope", sans-serif;
+  --font-serif: "Instrument Serif", serif;
 }
 
 html {
@@ -21,6 +25,7 @@ body {
   font-family: var(--font-sans);
   background: var(--color-paper);
   color: var(--color-ink);
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -69,4 +74,27 @@ button {
 
 .article-body a {
   color: var(--color-accent);
+}
+
+.blog-content .bn-container {
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+.blog-content .bn-editor {
+  padding: 0;
+}
+
+.blog-content .bn-block-content,
+.blog-content .bn-inline-content {
+  color: var(--color-ink);
+}
+
+.blog-content .bn-block-group {
+  row-gap: 0.35rem;
+}
+
+.blog-content .bn-inline-content {
+  line-height: 1.85;
 }
