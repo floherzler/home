@@ -1,20 +1,72 @@
 @import "tailwindcss";
 
-summary::-webkit-details-marker {
-  display: none
+:root {
+  --color-paper: #f3f7f6;
+  --color-card: #e8f2ef;
+  --color-line: rgba(15, 23, 42, 0.1);
+  --color-ink: #10212a;
+  --color-muted: #5c6d72;
+  --color-accent: #0f8c83;
+  --color-accent-strong: #0b6d66;
+  --font-serif: "Fraunces", serif;
+  --font-sans: "IBM Plex Sans", sans-serif;
 }
 
-.checker-background::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-image: linear-gradient(#e6e6e690 1px, transparent 1px),
-  linear-gradient(90deg, #e6e6e690 1px, transparent 1px);
-  background-size: 3.7em 3.7em;
-  mask-image: radial-gradient(ellipse at 50% 40%, black 0%, transparent 55%);
-  z-index: -1;
-  background-position-x: center;
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+.article-body {
+  color: var(--color-ink);
+}
+
+.article-body > * + * {
+  margin-top: 1rem;
+}
+
+.article-body h1,
+.article-body h2,
+.article-body h3,
+.article-body h4 {
+  font-family: var(--font-serif);
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+
+.article-body p,
+.article-body li {
+  color: var(--color-muted);
+  line-height: 1.9;
+}
+
+.article-body ul,
+.article-body ol {
+  padding-left: 1.25rem;
+}
+
+.article-body a {
+  color: var(--color-accent);
 }
