@@ -1,7 +1,9 @@
-import { BlockNoteViewRaw, useCreateBlockNote } from "@blocknote/react";
+import { useCreateBlockNote } from "@blocknote/react";
+import { BlockNoteView } from "@blocknote/shadcn";
 import "@blocknote/core/fonts/inter.css";
-import "@blocknote/react/style.css";
+import "@blocknote/shadcn/style.css";
 import { useEffect, useState } from "react";
+import { blockNoteSchema, normalizeBlockNoteContent } from "../lib/blocknote";
 
 type BlogContentProps = {
 	contentJson: string;
@@ -16,8 +18,7 @@ const htmlToPlainText = (value: string) =>
 
 const parseContentJson = (value: string) => {
 	try {
-		const parsed = JSON.parse(value);
-		return Array.isArray(parsed) ? parsed : undefined;
+		return normalizeBlockNoteContent(JSON.parse(value));
 	} catch {
 		return undefined;
 	}
@@ -25,10 +26,46 @@ const parseContentJson = (value: string) => {
 
 export function BlogContent({ contentJson, contentHtml }: BlogContentProps) {
 	const blocks = parseContentJson(contentJson);
+	const [isClient, setIsClient] = useState(false);
+
+	useEffect(() => {
+		setIsClient(true);
+	}, []);
+
+	if (!blocks || blocks.length === 0) {
+		return contentHtml ? (
+			<div className="article-body">
+				<p>{htmlToPlainText(contentHtml)}</p>
+			</div>
+		) : null;
+	}
+
+	if (!isClient) {
+		return contentHtml ? (
+			<div
+				className="article-body"
+				dangerouslySetInnerHTML={{ __html: contentHtml }}
+			/>
+		) : (
+			<div className="article-body">
+				<p>{htmlToPlainText(contentJson)}</p>
+			</div>
+		);
+	}
+
+	return <ClientBlogContent blocks={blocks} />;
+}
+
+function ClientBlogContent({
+	blocks,
+}: {
+	blocks: NonNullable<ReturnType<typeof parseContentJson>>;
+}) {
 	const [theme, setTheme] = useState<"light" | "dark">("light");
 	const editor = useCreateBlockNote({
+		schema: blockNoteSchema,
 		initialContent:
-			blocks && blocks.length > 0
+			blocks.length > 0
 				? blocks
 				: [{ id: "empty", type: "paragraph", content: [] }],
 	});
@@ -51,17 +88,9 @@ export function BlogContent({ contentJson, contentHtml }: BlogContentProps) {
 		return () => observer.disconnect();
 	}, []);
 
-	if (!blocks || blocks.length === 0) {
-		return contentHtml ? (
-			<div className="article-body">
-				<p>{htmlToPlainText(contentHtml)}</p>
-			</div>
-		) : null;
-	}
-
 	return (
 		<div className="blog-content">
-			<BlockNoteViewRaw
+			<BlockNoteView
 				editor={editor}
 				editable={false}
 				formattingToolbar={false}

@@ -71,28 +71,28 @@ function HomePage() {
 							</div>
 
 							<div className="grid gap-3 sm:grid-cols-3">
-								<div className="rounded-[1.5rem] bg-[var(--color-elevated)] px-4 py-4">
-									<p className="text-xs uppercase tracking-[0.22em] text-[var(--color-accent-strong)]">
+								<div className="rounded-[1.5rem] border border-[var(--color-line)] bg-[linear-gradient(180deg,rgba(255,255,255,0.08),transparent)] px-4 py-5">
+									<p className="text-[11px] uppercase tracking-[0.24em] text-[var(--color-accent-strong)]">
+										01
+									</p>
+									<p className="mt-3 font-[var(--font-display)] text-4xl italic tracking-[-0.05em] text-[var(--color-ink)]">
 										Focus
 									</p>
-									<p className="mt-2 text-sm leading-6 text-[var(--color-ink)]">
-										Small software, notes, and visible progress.
+								</div>
+								<div className="rounded-[1.5rem] border border-[var(--color-line)] bg-[linear-gradient(180deg,rgba(255,255,255,0.08),transparent)] px-4 py-5">
+									<p className="text-[11px] uppercase tracking-[0.24em] text-[var(--color-accent-strong)]">
+										02
+									</p>
+									<p className="mt-3 font-[var(--font-display)] text-4xl italic tracking-[-0.05em] text-[var(--color-ink)]">
+										Shape
 									</p>
 								</div>
-								<div className="rounded-[1.5rem] bg-[var(--color-elevated)] px-4 py-4">
-									<p className="text-xs uppercase tracking-[0.22em] text-[var(--color-accent-strong)]">
-										Format
+								<div className="rounded-[1.5rem] border border-[var(--color-line)] bg-[linear-gradient(180deg,rgba(255,255,255,0.08),transparent)] px-4 py-5">
+									<p className="text-[11px] uppercase tracking-[0.24em] text-[var(--color-accent-strong)]">
+										03
 									</p>
-									<p className="mt-2 text-sm leading-6 text-[var(--color-ink)]">
-										Short entries, deeper writeups when needed, no forced theme.
-									</p>
-								</div>
-								<div className="rounded-[1.5rem] bg-[var(--color-elevated)] px-4 py-4">
-									<p className="text-xs uppercase tracking-[0.22em] text-[var(--color-accent-strong)]">
-										Status
-									</p>
-									<p className="mt-2 text-sm leading-6 text-[var(--color-ink)]">
-										Still sparse by design. The archive fills in over time.
+									<p className="mt-3 font-[var(--font-display)] text-4xl italic tracking-[-0.05em] text-[var(--color-ink)]">
+										Growth
 									</p>
 								</div>
 							</div>

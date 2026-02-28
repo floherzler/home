@@ -41,6 +41,7 @@ export const Route = createRootRoute({
 	}),
 	shellComponent: RootDocument,
 	component: SiteShell,
+	notFoundComponent: NotFoundPage,
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -55,5 +56,21 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<Scripts />
 			</body>
 		</html>
+	);
+}
+
+function NotFoundPage() {
+	return (
+		<section className="mx-auto max-w-2xl rounded-[2rem] border border-[var(--color-line)] bg-[var(--color-surface)] p-8 shadow-[var(--shadow-panel)]">
+			<p className="text-xs uppercase tracking-[0.28em] text-[var(--color-muted)]">
+				404
+			</p>
+			<h1 className="mt-3 font-[var(--font-display)] text-5xl text-[var(--color-ink)]">
+				Page not found
+			</h1>
+			<p className="mt-4 max-w-xl leading-7 text-[var(--color-muted)]">
+				This route does not exist, or the content has moved.
+			</p>
+		</section>
 	);
 }

@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { AppwriteException, ID, type Models } from "appwrite";
 import { type FormEvent, useEffect, useState } from "react";
+import { Button } from "../components/ui/button";
+import { Card, CardContent } from "../components/ui/card";
 import { account } from "../lib/appwrite";
 import {
 	getCurrentAdmin,
@@ -11,6 +13,9 @@ import {
 export const Route = createFileRoute("/admin/login")({
 	component: AdminLoginPage,
 });
+
+const inputClasses =
+	"w-full rounded-2xl border border-[var(--color-line)] bg-[var(--color-elevated)] px-4 py-3 text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]";
 
 function AdminLoginPage() {
 	const navigate = useNavigate();
@@ -195,142 +200,151 @@ function AdminLoginPage() {
 	}, [currentUser, isApprovedUser, navigate]);
 
 	return (
-		<section className="mx-auto max-w-xl rounded-[2rem] border border-[var(--color-line)] bg-white p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
-			<p className="text-xs uppercase tracking-[0.28em] text-[var(--color-muted)]">
-				Admin
-			</p>
-			<h1 className="mt-3 font-[var(--font-serif)] text-4xl">Sign in</h1>
-			<p className="mt-3 leading-7 text-[var(--color-muted)]">
-				Sign in or create an Appwrite email/password account here. Access to the
-				admin area requires the Appwrite user label <code>admin</code>.
-			</p>
+		<Card className="mx-auto max-w-xl">
+			<CardContent className="p-8">
+				<p className="text-xs uppercase tracking-[0.28em] text-[var(--color-muted)]">
+					Admin
+				</p>
+				<h1 className="mt-3 font-[var(--font-serif)] text-4xl">Sign in</h1>
+				<p className="mt-3 leading-7 text-[var(--color-muted)]">
+					Sign in or create an Appwrite email/password account here. Access to
+					the admin area requires the Appwrite user label <code>admin</code>.
+				</p>
 
-			{currentUser ? (
-				<div
-					className={`mt-6 rounded-[1.5rem] px-5 py-4 text-sm ${
-						isApprovedUser
-							? "border border-emerald-200 bg-emerald-50 text-emerald-900"
-							: "border border-amber-200 bg-amber-50 text-amber-900"
-					}`}
-				>
-					<p className="font-medium">
-						Signed in as{" "}
-						{currentUser.name || currentUser.email || "Appwrite user"}.
-					</p>
-					<p className="mt-2">
-						Appwrite user ID: <code>{currentUser.$id}</code>
-					</p>
-					{isApprovedUser ? (
-						<>
-							<p className="mt-2 text-emerald-800">
-								This account is approved. If the redirect does not happen
-								automatically, continue to the admin area below.
-							</p>
-							<div className="mt-4 flex flex-wrap gap-3">
-								<Link
-									to="/admin/blog"
-									className="rounded-full bg-emerald-600 px-4 py-2 font-medium text-white transition hover:bg-emerald-700"
-								>
-									Continue to admin
-								</Link>
-								<button
+				{currentUser ? (
+					<div
+						className={`mt-6 rounded-[1.5rem] px-5 py-4 text-sm ${
+							isApprovedUser
+								? "border border-emerald-500/25 bg-emerald-500/10 text-emerald-100"
+								: "border border-amber-500/25 bg-amber-500/10 text-amber-100"
+						}`}
+					>
+						<p className="font-medium">
+							Signed in as{" "}
+							{currentUser.name || currentUser.email || "Appwrite user"}.
+						</p>
+						<p className="mt-2">
+							Appwrite user ID: <code>{currentUser.$id}</code>
+						</p>
+						{isApprovedUser ? (
+							<>
+								<p className="mt-2 text-emerald-200">
+									This account is approved. If the redirect does not happen
+									automatically, continue to the admin area below.
+								</p>
+								<div className="mt-4 flex flex-wrap gap-3">
+									<Button
+										asChild
+										className="bg-emerald-600 text-white hover:bg-emerald-500"
+									>
+										<Link to="/admin/blog">Continue to admin</Link>
+									</Button>
+									<Button
+										type="button"
+										onClick={() => void handleSignOut()}
+										disabled={isSubmitting}
+										variant="outline"
+										className="border-emerald-500/30 text-emerald-100 hover:border-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-50"
+									>
+										Sign out
+									</Button>
+								</div>
+							</>
+						) : (
+							<>
+								<p className="mt-2 text-amber-200">
+									Add the Appwrite user label <code>admin</code> if this account
+									should be allowed into the admin area.
+								</p>
+								<Button
 									type="button"
 									onClick={() => void handleSignOut()}
 									disabled={isSubmitting}
-									className="rounded-full border border-emerald-300 px-4 py-2 font-medium text-emerald-900 transition hover:border-emerald-500 disabled:cursor-not-allowed disabled:opacity-60"
+									variant="outline"
+									className="mt-4 border-amber-500/30 text-amber-100 hover:border-amber-400 hover:bg-amber-500/10 hover:text-amber-50"
 								>
 									Sign out
-								</button>
-							</div>
-						</>
-					) : (
-						<>
-							<p className="mt-2 text-amber-800">
-								Add the Appwrite user label <code>admin</code> if this account
-								should be allowed into the admin area.
-							</p>
-							<button
-								type="button"
-								onClick={() => void handleSignOut()}
-								disabled={isSubmitting}
-								className="mt-4 rounded-full border border-amber-300 px-4 py-2 font-medium text-amber-900 transition hover:border-amber-500 disabled:cursor-not-allowed disabled:opacity-60"
-							>
-								Sign out
-							</button>
-						</>
-					)}
-				</div>
-			) : null}
-
-			<form onSubmit={handleSubmit} className="mt-8 space-y-4">
-				<label className="block text-sm">
-					<span className="mb-2 block text-[var(--color-muted)]">Name</span>
-					<input
-						type="text"
-						value={name}
-						onChange={(event) => setName(event.target.value)}
-						className="w-full rounded-2xl border border-[var(--color-line)] bg-white px-4 py-3 outline-none focus:border-[var(--color-accent)]"
-					/>
-				</label>
-				<label className="block text-sm">
-					<span className="mb-2 block text-[var(--color-muted)]">Email</span>
-					<input
-						type="email"
-						value={email}
-						onChange={(event) => setEmail(event.target.value)}
-						className="w-full rounded-2xl border border-[var(--color-line)] bg-white px-4 py-3 outline-none focus:border-[var(--color-accent)]"
-					/>
-				</label>
-				<label className="block text-sm">
-					<span className="mb-2 block text-[var(--color-muted)]">Password</span>
-					<input
-						type="password"
-						value={password}
-						onChange={(event) => setPassword(event.target.value)}
-						className="w-full rounded-2xl border border-[var(--color-line)] bg-white px-4 py-3 outline-none focus:border-[var(--color-accent)]"
-					/>
-				</label>
-
-				{error ? (
-					<p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-						{error}
-					</p>
+								</Button>
+							</>
+						)}
+					</div>
 				) : null}
 
-				<div className="flex flex-col gap-3 sm:flex-row">
-					<button
-						type="submit"
-						disabled={isSubmitting || isLoadingSession}
-						className="flex-1 rounded-full bg-[var(--color-accent)] px-5 py-3 text-sm font-medium text-white transition hover:bg-[var(--color-accent-strong)] disabled:cursor-not-allowed disabled:opacity-60"
-					>
-						{isSubmitting ? "Working..." : "Sign in"}
-					</button>
-					<button
-						type="button"
-						onClick={() => void handleSignUp()}
-						disabled={isSubmitting || isLoadingSession}
-						className="flex-1 rounded-full border border-[var(--color-line)] bg-[var(--color-card)] px-5 py-3 text-sm font-medium text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-60"
-					>
-						{isSubmitting ? "Working..." : "Create account"}
-					</button>
-				</div>
-			</form>
+				<form onSubmit={handleSubmit} className="mt-8 space-y-4">
+					<label className="block text-sm">
+						<span className="mb-2 block text-[var(--color-muted)]">Name</span>
+						<input
+							type="text"
+							value={name}
+							onChange={(event) => setName(event.target.value)}
+							className={inputClasses}
+						/>
+					</label>
+					<label className="block text-sm">
+						<span className="mb-2 block text-[var(--color-muted)]">Email</span>
+						<input
+							type="email"
+							value={email}
+							onChange={(event) => setEmail(event.target.value)}
+							className={inputClasses}
+						/>
+					</label>
+					<label className="block text-sm">
+						<span className="mb-2 block text-[var(--color-muted)]">
+							Password
+						</span>
+						<input
+							type="password"
+							value={password}
+							onChange={(event) => setPassword(event.target.value)}
+							className={inputClasses}
+						/>
+					</label>
 
-			<div className="mt-6 border-t border-[var(--color-line)] pt-6">
-				<p className="text-sm text-[var(--color-muted)]">
-					This page calls <code>account.get()</code> on load so it can detect an
-					existing Appwrite browser session and skip the login form when
-					possible.
-				</p>
-				<button
-					type="button"
-					onClick={() => void handleResetSession()}
-					disabled={isSubmitting}
-					className="mt-4 rounded-full border border-[var(--color-line)] px-4 py-2 text-sm font-medium text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-60"
-				>
-					Reset current session
-				</button>
-			</div>
-		</section>
+					{error ? (
+						<p className="rounded-2xl border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+							{error}
+						</p>
+					) : null}
+
+					<div className="flex flex-col gap-3 sm:flex-row">
+						<Button
+							type="submit"
+							disabled={isSubmitting || isLoadingSession}
+							className="flex-1"
+						>
+							{isSubmitting ? "Working..." : "Sign in"}
+						</Button>
+						<Button
+							type="button"
+							onClick={() => void handleSignUp()}
+							disabled={isSubmitting || isLoadingSession}
+							variant="outline"
+							className="flex-1"
+						>
+							{isSubmitting ? "Working..." : "Create account"}
+						</Button>
+					</div>
+				</form>
+
+				<div className="mt-6 border-t border-[var(--color-line)] pt-6">
+					<p className="text-sm text-[var(--color-muted)]">
+						This page calls <code>account.get()</code> on load so it can detect
+						an existing Appwrite browser session and skip the login form when
+						possible.
+					</p>
+					<Button
+						type="button"
+						onClick={() => void handleResetSession()}
+						disabled={isSubmitting}
+						variant="outline"
+						size="sm"
+						className="mt-4"
+					>
+						Reset current session
+					</Button>
+				</div>
+			</CardContent>
+		</Card>
 	);
 }

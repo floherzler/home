@@ -1,5 +1,5 @@
 import { Link, Outlet } from "@tanstack/react-router";
-import { Github } from "lucide-react";
+import { Github, Shield } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { profile } from "../content/profile";
@@ -24,6 +24,12 @@ export function SiteShell() {
 							>
 								Blog
 							</Link>
+							<Button asChild variant="ghost" size="sm" className="h-8 px-3">
+								<Link to="/admin/login">
+									<Shield className="h-3.5 w-3.5" />
+									Admin
+								</Link>
+							</Button>
 							<ThemeToggle />
 							<Button asChild variant="ghost" size="sm" className="h-8 px-3">
 								<a href={profile.githubUrl} target="_blank" rel="noreferrer">
