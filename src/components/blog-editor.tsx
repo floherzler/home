@@ -1,6 +1,7 @@
 import { BlockNoteViewRaw, useCreateBlockNote } from "@blocknote/react";
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/react/style.css";
+import { useEffect, useState } from "react";
 
 type BlogEditorProps = {
 	initialContentJson: string;
@@ -16,12 +17,31 @@ const parseInitialContent = (value: string) => {
 };
 
 export function BlogEditor({ initialContentJson, onChange }: BlogEditorProps) {
+	const [theme, setTheme] = useState<"light" | "dark">("light");
 	const editor = useCreateBlockNote({
 		initialContent: parseInitialContent(initialContentJson),
 	});
 
+	useEffect(() => {
+		const syncTheme = () => {
+			setTheme(
+				document.documentElement.classList.contains("dark") ? "dark" : "light",
+			);
+		};
+
+		syncTheme();
+
+		const observer = new MutationObserver(syncTheme);
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ["class"],
+		});
+
+		return () => observer.disconnect();
+	}, []);
+
 	return (
-		<div className="rounded-[1.5rem] border border-[var(--color-line)] bg-white p-3 shadow-[0_16px_45px_rgba(15,23,42,0.08)]">
+		<div className="rounded-[1.5rem] border border-[var(--color-line)] bg-[var(--color-elevated)] p-3 shadow-[var(--shadow-soft)]">
 			<BlockNoteViewRaw
 				editor={editor}
 				formattingToolbar={false}
@@ -48,7 +68,7 @@ export function BlogEditor({ initialContentJson, onChange }: BlogEditorProps) {
 
 					onChange({ contentJson, contentHtml: html });
 				}}
-				theme="light"
+				theme={theme}
 			/>
 		</div>
 	);

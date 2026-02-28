@@ -100,6 +100,19 @@ npm install
 npm run dev
 ```
 
+## Project Notes
+
+If you want the fast version of how this app is put together:
+
+- [STYLING.md](/home/flo178/projects/home/STYLING.md)
+  Design tokens, shadcn-style primitives, and dark mode.
+- [ROUTING.md](/home/flo178/projects/home/ROUTING.md)
+  How TanStack Start pages, loaders, params, and route files fit together.
+- [APPWRITE_ARCHITECTURE.md](/home/flo178/projects/home/APPWRITE_ARCHITECTURE.md)
+  Auth, database/storage access, and what is or is not cached.
+- [CLIENT_SERVER_BOUNDARY.md](/home/flo178/projects/home/CLIENT_SERVER_BOUNDARY.md)
+  Which code runs in the browser, which runs on the server, and how TanStack Start bridges both.
+
 ## Tests
 
 ```bash

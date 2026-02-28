@@ -6,6 +6,8 @@
   --color-surface: rgba(255, 255, 255, 0.76);
   --color-elevated: rgba(255, 255, 255, 0.72);
   --color-card: #f0e9fb;
+  --color-tag-surface: #e8ddff;
+  --color-tag-ink: #392662;
   --color-line: rgba(83, 61, 112, 0.16);
   --color-ink: #1e1728;
   --color-muted: #6f637f;
@@ -31,6 +33,8 @@
   --color-surface: rgba(26, 23, 36, 0.82);
   --color-elevated: rgba(34, 29, 47, 0.92);
   --color-card: #221d2f;
+  --color-tag-surface: #34274e;
+  --color-tag-ink: #e3d7ff;
   --color-line: rgba(201, 190, 226, 0.14);
   --color-ink: #f4efff;
   --color-muted: #b6acc9;

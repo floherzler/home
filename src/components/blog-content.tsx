@@ -1,6 +1,7 @@
 import { BlockNoteViewRaw, useCreateBlockNote } from "@blocknote/react";
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/react/style.css";
+import { useEffect, useState } from "react";
 
 type BlogContentProps = {
 	contentJson: string;
@@ -24,12 +25,31 @@ const parseContentJson = (value: string) => {
 
 export function BlogContent({ contentJson, contentHtml }: BlogContentProps) {
 	const blocks = parseContentJson(contentJson);
+	const [theme, setTheme] = useState<"light" | "dark">("light");
 	const editor = useCreateBlockNote({
 		initialContent:
 			blocks && blocks.length > 0
 				? blocks
 				: [{ id: "empty", type: "paragraph", content: [] }],
 	});
+
+	useEffect(() => {
+		const syncTheme = () => {
+			setTheme(
+				document.documentElement.classList.contains("dark") ? "dark" : "light",
+			);
+		};
+
+		syncTheme();
+
+		const observer = new MutationObserver(syncTheme);
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ["class"],
+		});
+
+		return () => observer.disconnect();
+	}, []);
 
 	if (!blocks || blocks.length === 0) {
 		return contentHtml ? (
@@ -51,7 +71,7 @@ export function BlogContent({ contentJson, contentHtml }: BlogContentProps) {
 				sideMenu={false}
 				filePanel={false}
 				tableHandles={false}
-				theme="light"
+				theme={theme}
 			/>
 		</div>
 	);
