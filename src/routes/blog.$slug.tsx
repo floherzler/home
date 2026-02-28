@@ -1,25 +1,70 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { BlogContent } from "../components/blog-content";
-import { getPublishedPostBySlugServerFn } from "../lib/repositories/posts";
+import { getPublishedPostBySlugPublicClient } from "../lib/repositories/posts";
+import type { BlogPost } from "../lib/types";
 import { formatDisplayDate } from "../lib/utils/blog";
 
 export const Route = createFileRoute("/blog/$slug")({
-	loader: async ({ params }) => {
-		const post = await getPublishedPostBySlugServerFn({
-			data: { slug: params.slug },
-		});
-
-		if (!post) {
-			throw notFound();
-		}
-
-		return post;
-	},
 	component: BlogPostPage,
 });
 
 function BlogPostPage() {
-	const post = Route.useLoaderData();
+	const { slug } = Route.useParams();
+	const [post, setPost] = useState<BlogPost | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+		let mounted = true;
+
+		getPublishedPostBySlugPublicClient(slug)
+			.then((result) => {
+				if (mounted) {
+					setPost(result);
+				}
+			})
+			.catch((cause) => {
+				if (mounted) {
+					setError(
+						cause instanceof Error ? cause.message : "Unable to load post.",
+					);
+				}
+			})
+			.finally(() => {
+				if (mounted) {
+					setLoading(false);
+				}
+			});
+
+		return () => {
+			mounted = false;
+		};
+	}, [slug]);
+
+	if (error) {
+		return (
+			<section className="mx-auto max-w-3xl py-4 sm:py-8">
+				<div className="rounded-[2rem] border border-red-500/25 bg-red-500/10 px-5 py-6 text-red-200 shadow-[var(--shadow-panel)] sm:px-8 sm:py-8 dark:text-red-200">
+					{error}
+				</div>
+			</section>
+		);
+	}
+
+	if (loading) {
+		return (
+			<section className="mx-auto max-w-3xl py-4 sm:py-8">
+				<div className="rounded-[2rem] border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-6 text-[var(--color-muted)] shadow-[var(--shadow-panel)] sm:px-8 sm:py-8">
+					Loading post...
+				</div>
+			</section>
+		);
+	}
+
+	if (!post) {
+		throw notFound();
+	}
 
 	return (
 		<article className="mx-auto max-w-3xl py-4 sm:py-8">

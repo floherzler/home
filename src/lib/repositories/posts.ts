@@ -117,6 +117,48 @@ export const getLatestPostsServerFn = createServerFn({ method: "GET" })
     return posts.slice(0, data.limit);
   });
 
+export const listPublishedPostsPublicClient = async () => {
+  requireCollectionConfig();
+
+  try {
+    const response = await tablesDB.listRows<RawPostRow>(
+      env.databaseId,
+      env.postsTableId,
+      [Query.equal("status", "published"), Query.orderDesc("publishedAt")],
+    );
+
+    return filterPublishedPosts(response.rows.map(mapPost));
+  } catch (error) {
+    if (error instanceof AppwriteException) {
+      throw new Error(error.message);
+    }
+
+    throw error;
+  }
+};
+
+export const getPublishedPostBySlugPublicClient = async (slug: string) => {
+  requireCollectionConfig();
+
+  try {
+    const response = await tablesDB.listRows<RawPostRow>(
+      env.databaseId,
+      env.postsTableId,
+      [Query.equal("slug", slug), Query.equal("status", "published"), Query.limit(1)],
+    );
+
+    const post = response.rows[0];
+
+    return post ? mapPost(post) : null;
+  } catch (error) {
+    if (error instanceof AppwriteException) {
+      throw new Error(error.message);
+    }
+
+    throw error;
+  }
+};
+
 export const listAllPostsClient = async () => {
   requireCollectionConfig();
 
