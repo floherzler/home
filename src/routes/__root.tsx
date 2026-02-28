@@ -2,6 +2,15 @@ import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { SiteShell } from "../components/site-shell";
 import appCss from "../styles.css?url";
 
+const themeInitScript = `
+(() => {
+  const storedTheme = window.localStorage.getItem("theme");
+  const theme = storedTheme === "dark" ? "dark" : "light";
+  document.documentElement.classList.toggle("dark", theme === "dark");
+  document.documentElement.style.colorScheme = theme;
+})();
+`;
+
 export const Route = createRootRoute({
 	head: () => ({
 		meta: [
@@ -36,9 +45,10 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<head>
 				<HeadContent />
+				<script>{themeInitScript}</script>
 			</head>
 			<body>
 				{children}

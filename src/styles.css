@@ -2,18 +2,49 @@
 
 :root {
   --color-paper: #f7f4fb;
+  --color-paper-end: #f3efe9;
   --color-surface: rgba(255, 255, 255, 0.76);
+  --color-elevated: rgba(255, 255, 255, 0.72);
   --color-card: #f0e9fb;
   --color-line: rgba(83, 61, 112, 0.16);
   --color-ink: #1e1728;
   --color-muted: #6f637f;
   --color-accent: #8f79c9;
   --color-accent-strong: #7259b5;
+  --color-accent-contrast: #fffaf2;
+  --color-accent-button: #6b4fb1;
+  --color-accent-button-hover: #5f449f;
   --color-accent-soft: #efe8fb;
   --color-accent-ink: #2f2148;
+  --color-glow: rgba(114, 89, 181, 0.16);
+  --shadow-panel: 0 24px 80px rgba(30, 23, 40, 0.14);
+  --shadow-soft: 0 12px 30px rgba(30, 23, 40, 0.08);
   --font-display: "Instrument Serif", serif;
   --font-sans: "Manrope", sans-serif;
   --font-serif: "Instrument Serif", serif;
+  color-scheme: light;
+}
+
+.dark {
+  --color-paper: #121119;
+  --color-paper-end: #191724;
+  --color-surface: rgba(26, 23, 36, 0.82);
+  --color-elevated: rgba(34, 29, 47, 0.92);
+  --color-card: #221d2f;
+  --color-line: rgba(201, 190, 226, 0.14);
+  --color-ink: #f4efff;
+  --color-muted: #b6acc9;
+  --color-accent: #b59af2;
+  --color-accent-strong: #cab5ff;
+  --color-accent-contrast: #181320;
+  --color-accent-button: #8e72d9;
+  --color-accent-button-hover: #9c82e4;
+  --color-accent-soft: rgba(143, 121, 201, 0.18);
+  --color-accent-ink: #f4efff;
+  --color-glow: rgba(143, 121, 201, 0.24);
+  --shadow-panel: 0 24px 80px rgba(0, 0, 0, 0.38);
+  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.26);
+  color-scheme: dark;
 }
 
 html {
@@ -26,6 +57,7 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   text-rendering: optimizeLegibility;
+  transition: background-color 180ms ease, color 180ms ease;
 }
 
 a {
