@@ -524,7 +524,7 @@ function FoodCard({
 	const unit = food.unit;
 	const url = safeUrl(food.url);
 	const photo =
-		!url && food.sourceImage ? `/protein-pareto/${food.sourceImage}` : null;
+		!url && food.sourceImage ? `/protein-pareto-labels/${food.sourceImage}` : null;
 
 	const all = [...siblings].sort(
 		(a, b) => (a.pricePer100 ?? 0) - (b.pricePer100 ?? 0),
