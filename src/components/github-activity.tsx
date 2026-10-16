@@ -1,11 +1,11 @@
 import { type PointerEvent, useEffect, useMemo, useState } from "react";
 import { ColormapPicker, PICKER_ITEM } from "@/components/colormap-picker";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-
-interface Day {
-	date: string;
-	count: number;
-}
+import {
+	type ContributionDay,
+	type Contributions,
+	fetchContributions,
+} from "@/lib/github-contributions";
 
 const CELL = 10;
 const GAP = 3;
@@ -37,26 +37,31 @@ const formatDate = (iso: string) =>
 
 /**
  * Last year of GitHub contributions in the selected colour map (log or linear steps), scaled to fit the column (no scrolling).
- * Hover, tap or drag along the strip to read a day's count. Data comes from the public
- * github-contributions-api (no token); the block hides itself if that fails.
+ * Hover, tap or drag along the strip to read a day's count. `initial` comes from the server
+ * (cached); without it the browser fetches the public API itself and hides the block on failure.
  */
-export function GithubActivity({ username }: { username: string }) {
-	const [days, setDays] = useState<Day[] | null>(null);
-	const [total, setTotal] = useState<number | null>(null);
+export function GithubActivity({
+	username,
+	initial,
+}: {
+	username: string;
+	initial?: Contributions | null;
+}) {
+	const [days, setDays] = useState<ContributionDay[] | null>(
+		initial?.days ?? null,
+	);
+	const [total, setTotal] = useState<number | null>(initial?.total ?? null);
 	const [failed, setFailed] = useState(false);
 	const [active, setActive] = useState<number | null>(null);
 	const [scale, setScale] = useState<Scale>("log");
 
 	useEffect(() => {
+		if (initial) return;
 		const controller = new AbortController();
-		fetch(
-			`https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(username)}?y=last`,
-			{ signal: controller.signal },
-		)
-			.then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
-			.then((data: { total: { lastYear: number }; contributions: Day[] }) => {
-				setDays(data.contributions);
-				setTotal(data.total.lastYear);
+		fetchContributions(username, controller.signal)
+			.then((data) => {
+				setDays(data.days);
+				setTotal(data.total);
 			})
 			.catch((error) => {
 				if (!controller.signal.aborted) {
@@ -65,7 +70,7 @@ export function GithubActivity({ username }: { username: string }) {
 				}
 			});
 		return () => controller.abort();
-	}, [username]);
+	}, [username, initial]);
 
 	const max = useMemo(
 		() => (days ? Math.max(0, ...days.map((d) => d.count)) : 0),

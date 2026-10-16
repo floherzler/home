@@ -11,9 +11,12 @@ import {
 } from "@/components/project-art";
 import { Badge } from "@/components/ui/badge";
 import { WorkingStatus } from "@/components/working-status";
+import { getContributionsServerFn } from "@/lib/github-contributions";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
+	loader: () => getContributionsServerFn(),
+	staleTime: 60 * 60 * 1000,
 	component: HomePage,
 });
 
@@ -21,9 +24,10 @@ const TILE =
 	"relative isolate flex overflow-hidden rounded-xl border bg-card p-5";
 
 function HomePage() {
+	const contributions = Route.useLoaderData();
 	return (
 		<main className="pt-4 pb-10 sm:pt-6 sm:pb-16">
-			<GithubActivity username="floherzler" />
+			<GithubActivity username="floherzler" initial={contributions} />
 
 			<h2 className="mt-12 mb-3 text-sm font-medium text-muted-foreground">
 				Projects

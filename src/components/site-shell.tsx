@@ -36,7 +36,7 @@ export function SiteShell() {
 								<ArrowLeft className="size-4 transition-transform group-hover:-translate-x-0.5" />
 							)}
 							<img
-								src={`${profile.githubUrl}.png?size=96`}
+								src="https://avatars.githubusercontent.com/u/73059797?v=4&s=96"
 								alt=""
 								className="size-8 rounded-lg object-cover sm:size-9"
 							/>
