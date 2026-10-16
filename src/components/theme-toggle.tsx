@@ -12,15 +12,16 @@ function applyTheme(theme: Theme) {
 }
 
 export function ThemeToggle() {
-	const [theme, setTheme] = useState<Theme>("light");
+	const [theme, setTheme] = useState<Theme>("dark");
 
 	useEffect(() => {
 		const root = document.documentElement;
 		const storedTheme = window.localStorage.getItem(STORAGE_KEY);
+		// Dark is the default; only an explicit "light" choice switches it.
 		const nextTheme =
-			storedTheme === "dark" || root.classList.contains("dark")
-				? "dark"
-				: "light";
+			storedTheme === "light" && !root.classList.contains("dark")
+				? "light"
+				: "dark";
 
 		applyTheme(nextTheme);
 		setTheme(nextTheme);

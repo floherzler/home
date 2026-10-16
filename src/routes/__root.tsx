@@ -5,7 +5,7 @@ import appCss from "../styles.css?url";
 const themeInitScript = `
 (() => {
   const storedTheme = window.localStorage.getItem("theme");
-  const theme = storedTheme === "dark" ? "dark" : "light";
+  const theme = storedTheme === "light" ? "light" : "dark";
   document.documentElement.classList.toggle("dark", theme === "dark");
   document.documentElement.style.colorScheme = theme;
   try {
