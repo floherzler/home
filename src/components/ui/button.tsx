@@ -1,59 +1,57 @@
-import type * as React from "react";
-import { cloneElement, isValidElement } from "react";
+import { Button as ButtonPrimitive } from "@base-ui/react/button";
+import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-type ButtonVariant = "default" | "outline" | "ghost";
-type ButtonSize = "default" | "sm" | "lg" | "icon";
+const buttonVariants = cva(
+	"group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+	{
+		variants: {
+			variant: {
+				default: "bg-primary text-primary-foreground hover:bg-primary/80",
+				outline:
+					"border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+				secondary:
+					"bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+				ghost:
+					"hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
+				destructive:
+					"bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
+				link: "text-primary underline-offset-4 hover:underline",
+			},
+			size: {
+				default:
+					"h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+				xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
+				sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
+				lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
+				icon: "size-8",
+				"icon-xs":
+					"size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
+				"icon-sm":
+					"size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
+				"icon-lg": "size-9",
+			},
+		},
+		defaultVariants: {
+			variant: "default",
+			size: "default",
+		},
+	},
+);
 
-const variantClasses: Record<ButtonVariant, string> = {
-	default:
-		"bg-[var(--color-accent-button)] text-[var(--color-accent-contrast)] shadow-[var(--shadow-soft)] hover:bg-[var(--color-accent-button-hover)]",
-	outline:
-		"border border-[var(--color-line)] bg-[var(--color-elevated)] text-[var(--color-accent-ink)] shadow-[var(--shadow-soft)] hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]",
-	ghost:
-		"text-[var(--color-muted)] hover:bg-[var(--color-elevated)] hover:text-[var(--color-ink)]",
-};
-
-const sizeClasses: Record<ButtonSize, string> = {
-	default: "h-11 rounded-full px-5 py-2.5",
-	sm: "h-9 rounded-full px-4 text-sm",
-	lg: "h-12 rounded-full px-6",
-	icon: "h-10 w-10 rounded-full",
-};
-
-export interface ButtonProps
-	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-	asChild?: boolean;
-	variant?: ButtonVariant;
-	size?: ButtonSize;
-}
-
-export function Button({
-	asChild = false,
+function Button({
 	className,
-	size = "default",
 	variant = "default",
-	children,
+	size = "default",
 	...props
-}: ButtonProps) {
-	const classes = cn(
-		"inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-paper)] disabled:pointer-events-none disabled:opacity-50",
-		variantClasses[variant],
-		sizeClasses[size],
-		className,
-	);
-
-	if (asChild && isValidElement(children)) {
-		return cloneElement(children, {
-			...props,
-			...children.props,
-			className: cn(classes, children.props.className),
-		});
-	}
-
+}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
 	return (
-		<button className={classes} {...props}>
-			{children}
-		</button>
+		<ButtonPrimitive
+			data-slot="button"
+			className={cn(buttonVariants({ variant, size, className }))}
+			{...props}
+		/>
 	);
 }
+
+export { Button, buttonVariants };

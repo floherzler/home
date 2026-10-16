@@ -76,8 +76,8 @@ function AdminDashboard() {
 						>
 							Log out
 						</Button>
-						<Button asChild>
-							<Link to="/admin/blog/new">New post</Link>
+						<Button nativeButton={false} render={<Link to="/admin/blog/new" />}>
+							New post
 						</Button>
 					</div>
 				</div>

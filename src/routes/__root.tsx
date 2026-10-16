@@ -8,6 +8,10 @@ const themeInitScript = `
   const theme = storedTheme === "dark" ? "dark" : "light";
   document.documentElement.classList.toggle("dark", theme === "dark");
   document.documentElement.style.colorScheme = theme;
+  try {
+    const cmap = window.localStorage.getItem("cmap");
+    if (["viridis", "magma", "inferno", "plasma"].includes(cmap)) document.documentElement.dataset.cmap = cmap;
+  } catch {}
 })();
 `;
 
@@ -21,8 +25,7 @@ export const Route = createRootRoute({
 			},
 			{
 				name: "description",
-				content:
-					"Minimal homepage with a link to the GitHub profile of Flo Herzler.",
+				content: "Projects by Flo Herzler.",
 			},
 		],
 		links: [
@@ -35,7 +38,7 @@ export const Route = createRootRoute({
 			},
 			{
 				rel: "stylesheet",
-				href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap",
+				href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap",
 			},
 		],
 	}),

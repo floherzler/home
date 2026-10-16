@@ -234,10 +234,8 @@ function AdminLoginPage() {
 								</p>
 								<div className="mt-4 flex flex-wrap gap-3">
 									<Button
-										asChild
-										className="bg-emerald-600 text-white hover:bg-emerald-500"
-									>
-										<Link to="/admin/blog">Continue to admin</Link>
+										className="bg-emerald-600 text-white hover:bg-emerald-500" nativeButton={false} render={<Link to="/admin/blog" />}>
+										Continue to admin
 									</Button>
 									<Button
 										type="button"

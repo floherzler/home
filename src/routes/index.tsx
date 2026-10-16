@@ -1,126 +1,105 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Github } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { ArrowUpRight } from "lucide-react";
+import type { ReactNode } from "react";
+import { GithubActivity } from "@/components/github-activity";
+import {
+	DotGridArt,
+	NeuralNetArt,
+	ParetoFlex,
+	PlateArt,
+	PlateProgress,
+} from "@/components/project-art";
+import { Badge } from "@/components/ui/badge";
+import { WorkingStatus } from "@/components/working-status";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
 	component: HomePage,
 });
 
+const TILE =
+	"relative isolate flex overflow-hidden rounded-xl border bg-card p-5";
+
 function HomePage() {
 	return (
-		<main className="flex min-h-[calc(100vh-7.5rem)] items-center py-2 sm:min-h-[calc(100vh-8.5rem)] sm:py-4">
-			<section className="mx-auto w-full max-w-4xl">
-				<Card className="overflow-hidden">
-					<CardContent className="p-6 sm:p-10">
-						<div className="flex flex-col gap-8">
-							<div className="flex items-center justify-between gap-4">
-								<div className="flex items-center gap-4">
-									<img
-										src="https://github.com/floherzler.png?size=160"
-										alt="GitHub avatar for floherzler"
-										className="h-14 w-14 rounded-2xl object-cover sm:h-16 sm:w-16"
-									/>
-									<div>
-										<p className="text-xs uppercase tracking-[0.24em] text-[var(--color-accent-strong)]">
-											Flo Herzler
-										</p>
-										<p className="text-sm text-[var(--color-muted)]">
-											2026 coding notes
-										</p>
-									</div>
-								</div>
-								<p className="font-[var(--font-display)] text-2xl italic text-[var(--color-accent-strong)] sm:text-3xl">
-									simple.
-								</p>
-							</div>
+		<main className="pt-4 pb-10 sm:pt-6 sm:pb-16">
+			<GithubActivity username="floherzler" />
 
-							<div className="max-w-2xl">
-								<p className="text-xs uppercase tracking-[0.28em] text-[var(--color-accent-strong)]">
-									Personal log
-								</p>
-								<h1 className="mt-3 font-[var(--font-display)] text-5xl leading-[0.94] tracking-[-0.06em] text-[var(--color-ink)] sm:text-7xl">
-									A quiet place to document a year of{" "}
-									<span className="text-[var(--color-accent-strong)] italic tracking-[-0.04em]">
-										building.
-									</span>
-								</h1>
-								<p className="mt-5 max-w-xl text-base leading-7 text-[var(--color-muted)] sm:text-lg">
-									Posts live here as a running record of coding, experiments,
-									and things worth keeping.
-								</p>
-							</div>
+			<h2 className="mt-12 mb-3 text-sm font-medium text-muted-foreground">
+				Projects
+			</h2>
+			<div className="grid gap-2 sm:grid-cols-2">
+				<Link
+					to="/protein-pareto"
+					className={cn(
+						TILE,
+						"group flex-col items-start gap-5 transition-colors hover:border-foreground/30 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between",
+					)}
+				>
+					<DotGridArt />
+					<ParetoFlex />
+					<div className="sm:order-first sm:max-w-xs">
+						<p className="flex items-center gap-2 text-2xl font-medium tracking-tight sm:text-3xl">
+							Protein Pareto
+							<ArrowUpRight className="size-5 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
+						</p>
+						<p className="mt-1.5 text-sm text-muted-foreground">
+							Ready-to-eat protein snacks from German supermarkets, plotted by
+							price and protein.
+						</p>
+					</div>
+				</Link>
 
-							<div className="flex flex-wrap gap-3">
-								<Button asChild>
-									<Link to="/blog">
-										Read the blog
-										<ArrowRight className="h-4 w-4" />
-									</Link>
-								</Button>
-								<Button asChild variant="outline">
-									<a
-										href="https://github.com/floherzler"
-										target="_blank"
-										rel="noreferrer"
-									>
-										<Github className="h-4 w-4" />
-										GitHub
-									</a>
-								</Button>
-							</div>
-
-							<div className="grid gap-3 sm:grid-cols-3">
-								<div className="rounded-[1.5rem] border border-[var(--color-line)] bg-[linear-gradient(180deg,rgba(255,255,255,0.08),transparent)] px-4 py-5">
-									<p className="text-[11px] uppercase tracking-[0.24em] text-[var(--color-accent-strong)]">
-										01
-									</p>
-									<p className="mt-3 font-[var(--font-display)] text-4xl italic tracking-[-0.05em] text-[var(--color-ink)]">
-										Focus
-									</p>
-								</div>
-								<div className="rounded-[1.5rem] border border-[var(--color-line)] bg-[linear-gradient(180deg,rgba(255,255,255,0.08),transparent)] px-4 py-5">
-									<p className="text-[11px] uppercase tracking-[0.24em] text-[var(--color-accent-strong)]">
-										02
-									</p>
-									<p className="mt-3 font-[var(--font-display)] text-4xl italic tracking-[-0.05em] text-[var(--color-ink)]">
-										Shape
-									</p>
-								</div>
-								<div className="rounded-[1.5rem] border border-[var(--color-line)] bg-[linear-gradient(180deg,rgba(255,255,255,0.08),transparent)] px-4 py-5">
-									<p className="text-[11px] uppercase tracking-[0.24em] text-[var(--color-accent-strong)]">
-										03
-									</p>
-									<p className="mt-3 font-[var(--font-display)] text-4xl italic tracking-[-0.05em] text-[var(--color-ink)]">
-										Growth
-									</p>
-								</div>
-							</div>
-
-							<div className="border-t border-[var(--color-line)] pt-5">
-								<p className="text-xs uppercase tracking-[0.22em] text-[var(--color-accent-strong)]">
-									Planned here
-								</p>
-								<div className="mt-3 flex flex-wrap gap-2">
-									{[
-										"Build logs",
-										"Experiments",
-										"Tooling notes",
-										"Weekly reviews",
-									].map((item) => (
-										<span
-											key={item}
-											className="rounded-full border border-[var(--color-line)] bg-[var(--color-elevated)] px-3 py-1.5 text-sm text-[var(--color-accent-ink)]"
-										>
-											{item}
-										</span>
-									))}
-								</div>
-							</div>
-						</div>
-					</CardContent>
-				</Card>
-			</section>
+				<SmallTile
+					art={<PlateArt />}
+					status={<PlateProgress />}
+					name="3P Meals"
+					description="Plants, protein, portion: rating a meal against real nutrition data."
+				/>
+				<SmallTile
+					art={<NeuralNetArt />}
+					status={<WorkingStatus />}
+					name="Mystery ML Project"
+					description={
+						<>
+							Demystifying machine and deep learning -{" "}
+							<span className="whitespace-nowrap">
+								my work<em className="text-foreground/80">flo</em>
+							</span>
+						</>
+					}
+				/>
+			</div>
 		</main>
+	);
+}
+
+function SmallTile({
+	art,
+	status,
+	name,
+	description,
+}: {
+	art: ReactNode;
+	status: ReactNode;
+	name: string;
+	description?: ReactNode;
+}) {
+	return (
+		<div className={cn(TILE, "min-h-36 flex-col")}>
+			{art}
+			{status}
+			<div className="mt-auto pt-6">
+				<p className="flex items-center gap-2 font-medium text-foreground/85">
+					<Badge variant="outline">soon</Badge>
+					{name}
+				</p>
+				{description ? (
+					<p className="mt-1 max-w-[16rem] text-xs text-muted-foreground">
+						{description}
+					</p>
+				) : null}
+			</div>
+		</div>
 	);
 }

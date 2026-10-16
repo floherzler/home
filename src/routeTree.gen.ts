@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResumeDotjsonRouteImport } from './routes/resume[.]json'
 import { Route as ResumeRouteImport } from './routes/resume'
+import { Route as ProteinParetoRouteImport } from './routes/protein-pareto'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -27,6 +28,11 @@ const ResumeDotjsonRoute = ResumeDotjsonRouteImport.update({
 const ResumeRoute = ResumeRouteImport.update({
   id: '/resume',
   path: '/resume',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProteinParetoRoute = ProteinParetoRouteImport.update({
+  id: '/protein-pareto',
+  path: '/protein-pareto',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -67,6 +73,7 @@ const AdminBlogIdEditRoute = AdminBlogIdEditRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/protein-pareto': typeof ProteinParetoRoute
   '/resume': typeof ResumeRoute
   '/resume.json': typeof ResumeDotjsonRoute
   '/admin/login': typeof AdminLoginRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/protein-pareto': typeof ProteinParetoRoute
   '/resume': typeof ResumeRoute
   '/resume.json': typeof ResumeDotjsonRoute
   '/admin/login': typeof AdminLoginRoute
@@ -90,6 +98,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/protein-pareto': typeof ProteinParetoRoute
   '/resume': typeof ResumeRoute
   '/resume.json': typeof ResumeDotjsonRoute
   '/admin/login': typeof AdminLoginRoute
@@ -103,6 +112,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/protein-pareto'
     | '/resume'
     | '/resume.json'
     | '/admin/login'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/protein-pareto'
     | '/resume'
     | '/resume.json'
     | '/admin/login'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/protein-pareto'
     | '/resume'
     | '/resume.json'
     | '/admin/login'
@@ -137,6 +149,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProteinParetoRoute: typeof ProteinParetoRoute
   ResumeRoute: typeof ResumeRoute
   ResumeDotjsonRoute: typeof ResumeDotjsonRoute
   AdminLoginRoute: typeof AdminLoginRoute
@@ -161,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/resume'
       fullPath: '/resume'
       preLoaderRoute: typeof ResumeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/protein-pareto': {
+      id: '/protein-pareto'
+      path: '/protein-pareto'
+      fullPath: '/protein-pareto'
+      preLoaderRoute: typeof ProteinParetoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -217,6 +237,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProteinParetoRoute: ProteinParetoRoute,
   ResumeRoute: ResumeRoute,
   ResumeDotjsonRoute: ResumeDotjsonRoute,
   AdminLoginRoute: AdminLoginRoute,

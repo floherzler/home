@@ -11,3 +11,7 @@ count.txt
 .output
 .vinxi
 todos.json
+
+# Python virtualenvs / caches
+.venv/
+__pycache__/
